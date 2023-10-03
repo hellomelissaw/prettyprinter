@@ -1,17 +1,17 @@
  antlrjar = antlr-4.13.0-complete.jar
 
 ###### FOR LINUX AND MAC -- comment the following line if you use Windows:
-classpath = '$(antlrjar):.'
+#classpath = '$(antlrjar):.'
 
 ###### FOR WINDOWS -- uncomment the following line if you use Windows:
-#classpath = '$(antlrjar);.'
+classpath = '$(antlrjar);.'
 
 antlr4 = java org.antlr.v4.Tool
 grun = java org.antlr.v4.gui.TestRig
 GENERATED = hdlListener.java hdlBaseListener.java hdlParser.java hdlLexer.java
 
 all:	
-	make grun
+	make run
 
 hdlLexer.java:	hdl.g4
 	$(antlr4) -visitor hdl.g4

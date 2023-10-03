@@ -1,15 +1,15 @@
 grammar hdl;
 
 // Context-free grammar for parser
-start: '.hardware' IDENTIFIER '.inputs' IDENTIFIER+ '.outputs' IDENTIFIER+ '.latches' latchSection '.update' updateSection '.simulate' simulateSection EOF;
+start: '.hardware' name_of_file=IDENTIFIER '.inputs' ins=IDENTIFIER+ '.outputs' outs=IDENTIFIER+ '.latches' lats=latchSection '.update' upds=updateSection '.simulate' sim=simulateSection EOF;
 
 latchSection: latches+; 
-latches: 	IDENTIFIER '->' IDENTIFIER;
+latches: 	id1=IDENTIFIER '->' id2=IDENTIFIER;
 
 updateSection: updates+; 
-updates: IDENTIFIER '=' expr; 
+updates: id=IDENTIFIER '=' e=expr;
 
-simulateSection : IDENTIFIER '=' expr; 
+simulateSection : id=IDENTIFIER '=' e=expr;
 
 
 expr: 
