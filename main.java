@@ -51,7 +51,7 @@ class Interpreter extends AbstractParseTreeVisitor<String> implements implVisito
     // todo - Java will complain that "Interpreter" does not in fact
     // implement "implVisitor" at the moment.
 
-
+//add comment to negar
 	 String visitStart(hdlParser.StartContext ctx){
 		 System.out.println("Evaluating Start");
 		return "hello";
