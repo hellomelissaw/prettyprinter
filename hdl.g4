@@ -9,6 +9,7 @@ latches: 	id1=IDENTIFIER '->' id2=IDENTIFIER;
 updateSection: updates+; 
 updates: id=IDENTIFIER '=' e=expr;
 
+
 simulateSection : id=IDENTIFIER '=' e=expr;
 
 
