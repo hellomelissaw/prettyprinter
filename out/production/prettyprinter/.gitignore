@@ -1,0 +1,20 @@
+# Default ignored files
+/shelf/
+/workspace.xml
+# Editor-based HTTP Client requests
+/httpRequests/
+# Datasource local storage ignored files
+/dataSources/
+/dataSources.local.xml
+*.class
+*.interp
+*.tokens
+.idea/
+hdlBaseListener.java
+hdlBaseVisitor.java
+hdlLexer.java
+hdlListener.java
+hdlParser.java
+hdlVisitor.java
+.DS_Store
+*.iml
