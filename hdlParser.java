@@ -96,6 +96,13 @@ public class hdlParser extends Parser {
 
 	@SuppressWarnings("CheckReturnValue")
 	public static class StartContext extends ParserRuleContext {
+		public Token name_of_file;
+		public Token ins;
+		public Token outs;
+		public LatchSectionContext lats;
+		public UpdateSectionContext upds;
+		public SimulateSectionContext sim;
+		public TerminalNode EOF() { return getToken(hdlParser.EOF, 0); }
 		public List<TerminalNode> IDENTIFIER() { return getTokens(hdlParser.IDENTIFIER); }
 		public TerminalNode IDENTIFIER(int i) {
 			return getToken(hdlParser.IDENTIFIER, i);
@@ -109,7 +116,6 @@ public class hdlParser extends Parser {
 		public SimulateSectionContext simulateSection() {
 			return getRuleContext(SimulateSectionContext.class,0);
 		}
-		public TerminalNode EOF() { return getToken(hdlParser.EOF, 0); }
 		public StartContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
 		}
@@ -139,7 +145,7 @@ public class hdlParser extends Parser {
 			setState(14);
 			match(T__0);
 			setState(15);
-			match(IDENTIFIER);
+			((StartContext)_localctx).name_of_file = match(IDENTIFIER);
 			setState(16);
 			match(T__1);
 			setState(18); 
@@ -149,7 +155,7 @@ public class hdlParser extends Parser {
 				{
 				{
 				setState(17);
-				match(IDENTIFIER);
+				((StartContext)_localctx).ins = match(IDENTIFIER);
 				}
 				}
 				setState(20); 
@@ -165,7 +171,7 @@ public class hdlParser extends Parser {
 				{
 				{
 				setState(23);
-				match(IDENTIFIER);
+				((StartContext)_localctx).outs = match(IDENTIFIER);
 				}
 				}
 				setState(26); 
@@ -175,15 +181,15 @@ public class hdlParser extends Parser {
 			setState(28);
 			match(T__3);
 			setState(29);
-			latchSection();
+			((StartContext)_localctx).lats = latchSection();
 			setState(30);
 			match(T__4);
 			setState(31);
-			updateSection();
+			((StartContext)_localctx).upds = updateSection();
 			setState(32);
 			match(T__5);
 			setState(33);
-			simulateSection();
+			((StartContext)_localctx).sim = simulateSection();
 			setState(34);
 			match(EOF);
 			}
@@ -262,6 +268,8 @@ public class hdlParser extends Parser {
 
 	@SuppressWarnings("CheckReturnValue")
 	public static class LatchesContext extends ParserRuleContext {
+		public Token id1;
+		public Token id2;
 		public List<TerminalNode> IDENTIFIER() { return getTokens(hdlParser.IDENTIFIER); }
 		public TerminalNode IDENTIFIER(int i) {
 			return getToken(hdlParser.IDENTIFIER, i);
@@ -292,11 +300,11 @@ public class hdlParser extends Parser {
 			enterOuterAlt(_localctx, 1);
 			{
 			setState(41);
-			match(IDENTIFIER);
+			((LatchesContext)_localctx).id1 = match(IDENTIFIER);
 			setState(42);
 			match(T__6);
 			setState(43);
-			match(IDENTIFIER);
+			((LatchesContext)_localctx).id2 = match(IDENTIFIER);
 			}
 		}
 		catch (RecognitionException re) {
@@ -373,6 +381,8 @@ public class hdlParser extends Parser {
 
 	@SuppressWarnings("CheckReturnValue")
 	public static class UpdatesContext extends ParserRuleContext {
+		public Token id;
+		public ExprContext e;
 		public TerminalNode IDENTIFIER() { return getToken(hdlParser.IDENTIFIER, 0); }
 		public ExprContext expr() {
 			return getRuleContext(ExprContext.class,0);
@@ -403,11 +413,11 @@ public class hdlParser extends Parser {
 			enterOuterAlt(_localctx, 1);
 			{
 			setState(50);
-			match(IDENTIFIER);
+			((UpdatesContext)_localctx).id = match(IDENTIFIER);
 			setState(51);
 			match(T__7);
 			setState(52);
-			expr(0);
+			((UpdatesContext)_localctx).e = expr(0);
 			}
 		}
 		catch (RecognitionException re) {
@@ -423,6 +433,8 @@ public class hdlParser extends Parser {
 
 	@SuppressWarnings("CheckReturnValue")
 	public static class SimulateSectionContext extends ParserRuleContext {
+		public Token id;
+		public ExprContext e;
 		public TerminalNode IDENTIFIER() { return getToken(hdlParser.IDENTIFIER, 0); }
 		public ExprContext expr() {
 			return getRuleContext(ExprContext.class,0);
@@ -453,11 +465,11 @@ public class hdlParser extends Parser {
 			enterOuterAlt(_localctx, 1);
 			{
 			setState(54);
-			match(IDENTIFIER);
+			((SimulateSectionContext)_localctx).id = match(IDENTIFIER);
 			setState(55);
 			match(T__7);
 			setState(56);
-			expr(0);
+			((SimulateSectionContext)_localctx).e = expr(0);
 			}
 		}
 		catch (RecognitionException re) {
