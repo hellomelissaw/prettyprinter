@@ -10,11 +10,5 @@
 *.interp
 *.tokens
 .idea/
-hdlBaseListener.java
-hdlBaseVisitor.java
-hdlLexer.java
-hdlListener.java
-hdlParser.java
-hdlVisitor.java
 .DS_Store
 *.iml

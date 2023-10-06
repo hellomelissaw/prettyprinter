@@ -11,7 +11,7 @@ grun = java org.antlr.v4.gui.TestRig
 GENERATED = hdlListener.java hdlBaseListener.java hdlParser.java hdlLexer.java
 
 all:	
-	make grun
+	make run
 
 hdlLexer.java:	hdl.g4
 	$(antlr4) -visitor hdl.g4

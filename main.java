@@ -51,31 +51,41 @@ class Interpreter extends AbstractParseTreeVisitor<String> implements hdlVisitor
     // todo - Java will complain that "Interpreter" does not in fact
     // implement "implVisitor" at the moment.
 
-//add comment to negar
+	@Override
+	public String visitTerminal(TerminalNode node) {
+		return node.getText(); // Return the text of the visited token
+	}
+
+	//add comment to negar
 	public String visitStart(hdlParser.StartContext ctx){
 		 System.out.println("Evaluating Start");
 		//return "hello";
-		return ctx.name_of_file.toString() + ctx.ins.toString() + ctx.outs.toString();
+		return ctx.name_of_file.getText() + ctx.ins.getText() + ctx.outs.getText();
 	}
 
 	@Override
 	public String visitLatchSection(hdlParser.LatchSectionContext ctx) {
-		return null;
+		System.out.println("latches Section");
+		return ctx.latches().toString();
 	}
 
 	@Override
 	public String visitLatches(hdlParser.LatchesContext ctx) {
-		return null;
+	String id1=ctx.id1.getText();
+	String id2=ctx.id2.getText();
+	return id1 + "->" +id2;
 	}
 
 	@Override
 	public String visitUpdateSection(hdlParser.UpdateSectionContext ctx) {
-		return null;
+		System.out.println("updates section");
+		return ctx.updates().toString();
 	}
 
 	@Override
 	public String visitUpdates(hdlParser.UpdatesContext ctx) {
-		return null;
+		String id=ctx.e.getText();
+		return id + "=" + ctx.e;
 	}
 
 	@Override
