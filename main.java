@@ -63,13 +63,23 @@ class Interpreter extends AbstractParseTreeVisitor<String> implements hdlVisitor
 		String program = "<h1>";
 		program += ctx.name_of_file.getText() + "</h1>\n";
 
-		program += ctx.ins.getText();
+		//ArrayList<String> insLen= (ArrayList<String>)ctx.ins;
+		program+="<h2> Inputs </h2>\n";
+		for (Token c: ctx.ins)
+			program += c.getText();
+
+		program+="<h2> Outputs </h2>\n";
+		for (Token c: ctx.outs)
+			program += c.getText();
+
+		program+="<h2> Latches </h2>";
 		program+=visit(ctx.lats);
+		program+="<h2> Updates </h2>";
 		program+=visit(ctx.upds);
 
 		System.out.println(program);
 
-		return ctx.name_of_file.getText() + ctx.ins.getText() + ctx.outs.getText();
+		return ctx.name_of_file.getText();
 	}
 
 	@Override
@@ -109,7 +119,7 @@ class Interpreter extends AbstractParseTreeVisitor<String> implements hdlVisitor
 	public String visitUpdates(hdlParser.UpdatesContext ctx) {
 		String id=ctx.id.getText();
 
-		return id + "larr" + visit(ctx.e);
+		return id + "&larr;" + visit(ctx.e);
 	}
 
 	@Override

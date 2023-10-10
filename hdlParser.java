@@ -33,7 +33,7 @@ public class hdlParser extends Parser {
 	private static String[] makeLiteralNames() {
 		return new String[] {
 			null, "'.hardware'", "'.inputs'", "'.outputs'", "'.latches'", "'.update'", 
-			"'.simulate'", "'->'", "'='", "'!'", "'&&'", "'||'", "'('", "')'"
+			"'.simulate'", "'->'", "'='", "'('", "')'", "'!'", "'&&'", "'||'"
 		};
 	}
 	private static final String[] _LITERAL_NAMES = makeLiteralNames();
@@ -97,8 +97,9 @@ public class hdlParser extends Parser {
 	@SuppressWarnings("CheckReturnValue")
 	public static class StartContext extends ParserRuleContext {
 		public Token name_of_file;
-		public Token ins;
-		public Token outs;
+		public Token IDENTIFIER;
+		public List<Token> ins = new ArrayList<Token>();
+		public List<Token> outs = new ArrayList<Token>();
 		public LatchSectionContext lats;
 		public UpdateSectionContext upds;
 		public SimulateSectionContext sim;
@@ -155,7 +156,8 @@ public class hdlParser extends Parser {
 				{
 				{
 				setState(17);
-				((StartContext)_localctx).ins = match(IDENTIFIER);
+				((StartContext)_localctx).IDENTIFIER = match(IDENTIFIER);
+				((StartContext)_localctx).ins.add(((StartContext)_localctx).IDENTIFIER);
 				}
 				}
 				setState(20); 
@@ -171,7 +173,8 @@ public class hdlParser extends Parser {
 				{
 				{
 				setState(23);
-				((StartContext)_localctx).outs = match(IDENTIFIER);
+				((StartContext)_localctx).IDENTIFIER = match(IDENTIFIER);
+				((StartContext)_localctx).outs.add(((StartContext)_localctx).IDENTIFIER);
 				}
 				}
 				setState(26); 
@@ -668,26 +671,26 @@ public class hdlParser extends Parser {
 				break;
 			case T__8:
 				{
-				_localctx = new NotContext(_localctx);
-				_ctx = _localctx;
-				_prevctx = _localctx;
-				setState(61);
-				((NotContext)_localctx).op = match(T__8);
-				setState(62);
-				((NotContext)_localctx).e = expr(4);
-				}
-				break;
-			case T__11:
-				{
 				_localctx = new ParenContext(_localctx);
 				_ctx = _localctx;
 				_prevctx = _localctx;
-				setState(63);
-				match(T__11);
-				setState(64);
+				setState(61);
+				match(T__8);
+				setState(62);
 				((ParenContext)_localctx).e = expr(0);
+				setState(63);
+				match(T__9);
+				}
+				break;
+			case T__10:
+				{
+				_localctx = new NotContext(_localctx);
+				_ctx = _localctx;
+				_prevctx = _localctx;
 				setState(65);
-				match(T__12);
+				((NotContext)_localctx).op = match(T__10);
+				setState(66);
+				((NotContext)_localctx).e = expr(3);
 				}
 				break;
 			default:
@@ -711,11 +714,11 @@ public class hdlParser extends Parser {
 						((AndContext)_localctx).e1 = _prevctx;
 						pushNewRecursionContext(_localctx, _startState, RULE_expr);
 						setState(69);
-						if (!(precpred(_ctx, 3))) throw new FailedPredicateException(this, "precpred(_ctx, 3)");
+						if (!(precpred(_ctx, 2))) throw new FailedPredicateException(this, "precpred(_ctx, 2)");
 						setState(70);
-						((AndContext)_localctx).op = match(T__9);
+						((AndContext)_localctx).op = match(T__11);
 						setState(71);
-						((AndContext)_localctx).e2 = expr(4);
+						((AndContext)_localctx).e2 = expr(3);
 						}
 						break;
 					case 2:
@@ -724,11 +727,11 @@ public class hdlParser extends Parser {
 						((OrContext)_localctx).e1 = _prevctx;
 						pushNewRecursionContext(_localctx, _startState, RULE_expr);
 						setState(72);
-						if (!(precpred(_ctx, 2))) throw new FailedPredicateException(this, "precpred(_ctx, 2)");
+						if (!(precpred(_ctx, 1))) throw new FailedPredicateException(this, "precpred(_ctx, 1)");
 						setState(73);
-						((OrContext)_localctx).op = match(T__10);
+						((OrContext)_localctx).op = match(T__12);
 						setState(74);
-						((OrContext)_localctx).e2 = expr(3);
+						((OrContext)_localctx).e2 = expr(2);
 						}
 						break;
 					}
@@ -761,9 +764,9 @@ public class hdlParser extends Parser {
 	private boolean expr_sempred(ExprContext _localctx, int predIndex) {
 		switch (predIndex) {
 		case 0:
-			return precpred(_ctx, 3);
-		case 1:
 			return precpred(_ctx, 2);
+		case 1:
+			return precpred(_ctx, 1);
 		}
 		return true;
 	}
@@ -808,12 +811,12 @@ public class hdlParser extends Parser {
 		"\u0000\u0000\u000067\u0005\u000e\u0000\u000078\u0005\b\u0000\u000089\u0003"+
 		"\f\u0006\u00009\u000b\u0001\u0000\u0000\u0000:;\u0006\u0006\uffff\uffff"+
 		"\u0000;D\u0005\u000e\u0000\u0000<D\u0005\u000f\u0000\u0000=>\u0005\t\u0000"+
-		"\u0000>D\u0003\f\u0006\u0004?@\u0005\f\u0000\u0000@A\u0003\f\u0006\u0000"+
-		"AB\u0005\r\u0000\u0000BD\u0001\u0000\u0000\u0000C:\u0001\u0000\u0000\u0000"+
-		"C<\u0001\u0000\u0000\u0000C=\u0001\u0000\u0000\u0000C?\u0001\u0000\u0000"+
-		"\u0000DM\u0001\u0000\u0000\u0000EF\n\u0003\u0000\u0000FG\u0005\n\u0000"+
-		"\u0000GL\u0003\f\u0006\u0004HI\n\u0002\u0000\u0000IJ\u0005\u000b\u0000"+
-		"\u0000JL\u0003\f\u0006\u0003KE\u0001\u0000\u0000\u0000KH\u0001\u0000\u0000"+
+		"\u0000>?\u0003\f\u0006\u0000?@\u0005\n\u0000\u0000@D\u0001\u0000\u0000"+
+		"\u0000AB\u0005\u000b\u0000\u0000BD\u0003\f\u0006\u0003C:\u0001\u0000\u0000"+
+		"\u0000C<\u0001\u0000\u0000\u0000C=\u0001\u0000\u0000\u0000CA\u0001\u0000"+
+		"\u0000\u0000DM\u0001\u0000\u0000\u0000EF\n\u0002\u0000\u0000FG\u0005\f"+
+		"\u0000\u0000GL\u0003\f\u0006\u0003HI\n\u0001\u0000\u0000IJ\u0005\r\u0000"+
+		"\u0000JL\u0003\f\u0006\u0002KE\u0001\u0000\u0000\u0000KH\u0001\u0000\u0000"+
 		"\u0000LO\u0001\u0000\u0000\u0000MK\u0001\u0000\u0000\u0000MN\u0001\u0000"+
 		"\u0000\u0000N\r\u0001\u0000\u0000\u0000OM\u0001\u0000\u0000\u0000\u0007"+
 		"\u0014\u001a\'0CKM";
