@@ -60,12 +60,22 @@ class Interpreter extends AbstractParseTreeVisitor<String> implements hdlVisitor
 	public String visitStart(hdlParser.StartContext ctx){
 		 System.out.println("Evaluating Start");
 		//return "hello";
+		String program = "<h1>";
+		program += ctx.name_of_file.getText();
+
+		program += ctx.ins.getText();
+
+		visit(ctx.lats);
+
 		return ctx.name_of_file.getText() + ctx.ins.getText() + ctx.outs.getText();
 	}
 
 	@Override
 	public String visitLatchSection(hdlParser.LatchSectionContext ctx) {
 		System.out.println("latches Section");
+		length = ctx.latches().toString().length();
+
+		return visit(ctx.latches().toString[0]);
 		return ctx.latches().toString();
 	}
 
@@ -73,24 +83,29 @@ class Interpreter extends AbstractParseTreeVisitor<String> implements hdlVisitor
 	public String visitLatches(hdlParser.LatchesContext ctx) {
 	String id1=ctx.id1.getText();
 	String id2=ctx.id2.getText();
-	return id1 + "->" +id2;
+	return id1 + "&rarr;" +id2;
 	}
 
 	@Override
 	public String visitUpdateSection(hdlParser.UpdateSectionContext ctx) {
 		System.out.println("updates section");
+		String updates=ctx.updates().toString();
 		return ctx.updates().toString();
 	}
-
+m
 	@Override
 	public String visitUpdates(hdlParser.UpdatesContext ctx) {
-		String id=ctx.e.getText();
-		return id + "=" + ctx.e;
+		String id=ctx.id.getText();
+		String e=ctx.e.getText();
+		return ctx.id + "=" + ctx.e.getText();
 	}
 
 	@Override
 	public String visitSimulateSection(hdlParser.SimulateSectionContext ctx) {
-		return null;
+		String id=ctx.id.getText();
+		String e=ctx.e.getText();
+		System.out.println("Simulate Section");
+		return ctx.id+"="+ctx.e.getText();
 	}
 
 	@Override
@@ -105,7 +120,7 @@ class Interpreter extends AbstractParseTreeVisitor<String> implements hdlVisitor
 
 	@Override
 	public String visitVar(hdlParser.VarContext ctx) {
-		return null;
+		return ctx.getText();
 	}
 
 	@Override
