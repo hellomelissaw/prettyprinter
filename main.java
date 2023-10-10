@@ -74,12 +74,13 @@ class Interpreter extends AbstractParseTreeVisitor<String> implements hdlVisitor
 	public String visitLatchSection(hdlParser.LatchSectionContext ctx) {
 		System.out.println("latches Section");
 		int length = ctx.latches().size();
-		for (int i = 0; i <length ; i++) {
-			System.out.println(visit(ctx.latches().get(i)));
-		}
 
-		return "im dooone wit this shit";
-		//return ctx.latches().toString();
+		String latches="";
+		for (int i = 0; i <length ; i++) {
+			latches+=visit(ctx.latches().get(i));
+		}
+	//	System.out.println(latches);
+		return latches;
 	}
 
 	@Override
