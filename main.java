@@ -48,8 +48,8 @@ public class main {
 // simply a Double.
 
 class Interpreter extends AbstractParseTreeVisitor<String> implements hdlVisitor<String> {
-    // todo - Java will complain that "Interpreter" does not in fact
-    // implement "implVisitor" at the moment.
+	// todo - Java will complain that "Interpreter" does not in fact
+	// implement "implVisitor" at the moment.
 
 	@Override
 	public String visitTerminal(TerminalNode node) {
@@ -57,25 +57,36 @@ class Interpreter extends AbstractParseTreeVisitor<String> implements hdlVisitor
 	}
 
 	//add comment to negar
-	public String visitStart(hdlParser.StartContext ctx){
-		 System.out.println("Evaluating Start");
+	public String visitStart(hdlParser.StartContext ctx) {
+		System.out.println("Evaluating Start");
 		//return "hello";
-		String program = "<h1>";
-		program += ctx.name_of_file.getText() + "</h1>\n";
+
+
+		String program = "<!DOCTYPE html>\n" +
+				" <html><head><title> My Pretty Printer</title>\n" +
+				" <script src=\"https://polyfill.io/v3/polyfill.min.js?features=es6\"></script>\n" +
+				"<script type=\"text/javascript\" id=\"MathJax-script\"\n" +
+				"async src=\"https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js\">\n" +
+				"</script></head><body>\n";
+		program += "\n<h1>" + ctx.name_of_file.getText() + "</h1>\n";
 
 		//ArrayList<String> insLen= (ArrayList<String>)ctx.ins;
-		program+="\n<h2> Inputs </h2>\n";
-		for (Token c: ctx.ins)
+		program += "\n<h2> Inputs </h2>\n";
+		for (Token c : ctx.ins)
+			program += c.getText() + " \n";
+
+		program += "\n<h2> Outputs </h2>\n";
+		for (Token c : ctx.outs)
 			program += c.getText() + " ";
 
-		program+="\n<h2> Outputs </h2>\n";
-		for (Token c: ctx.outs)
-			program += c.getText() + " ";
+		program += "\n\n<h2> Latches </h2>\n";
+		program += visit(ctx.lats);
+		program += "\n<h2> Updates </h2>\n";
+		program += visit(ctx.upds);
 
-		program+="\n<h2> Latches </h2>\n";
-		program+=visit(ctx.lats);
-		program+="\n<h2> Updates </h2>\n";
-		program+=visit(ctx.upds);
+		program += "\n<h2> Simulation inputs </h2>\n";
+		program += visit(ctx.sim);
+		program += "\n</body></html>\n";
 
 		System.out.println(program);
 
@@ -87,19 +98,19 @@ class Interpreter extends AbstractParseTreeVisitor<String> implements hdlVisitor
 		System.out.println("latches Section");
 		int length = ctx.latches().size();
 
-		String latches="";
-		for (int i = 0; i <length ; i++) {
-			latches+=visit(ctx.latches().get(i));
+		String latches = "";
+		for (int i = 0; i < length; i++) {
+			latches += visit(ctx.latches().get(i));
 		}
-	//	System.out.println(latches);
+		//	System.out.println(latches);
 		return latches;
 	}
 
 	@Override
 	public String visitLatches(hdlParser.LatchesContext ctx) {
-	String id1=ctx.id1.getText();
-	String id2=ctx.id2.getText();
-	return id1 + "&rarr;" +id2 + "<br>\n";
+		String id1 = ctx.id1.getText();
+		String id2 = ctx.id2.getText();
+		return id1 + "&rarr;" + id2 + "<br>\n";
 	}
 
 	@Override
@@ -107,9 +118,9 @@ class Interpreter extends AbstractParseTreeVisitor<String> implements hdlVisitor
 		System.out.println("Update Section");
 		int length = ctx.updates().size();
 
-		String updates="";
-		for (int i = 0; i <length ; i++) {
-			updates+=visit(ctx.updates().get(i));
+		String updates = "";
+		for (int i = 0; i < length; i++) {
+			updates += visit(ctx.updates().get(i));
 		}
 		//	System.out.println(latches);
 		return updates;
@@ -117,26 +128,24 @@ class Interpreter extends AbstractParseTreeVisitor<String> implements hdlVisitor
 
 	@Override
 	public String visitUpdates(hdlParser.UpdatesContext ctx) {
-		String id=ctx.id.getText();
+		String id = ctx.id.getText();
 		return id + "&larr;" + visit(ctx.e) + "<br>\n";
 	}
 
 	@Override
 	public String visitSimulateSection(hdlParser.SimulateSectionContext ctx) {
-		String id=ctx.id.getText();
-		String e=ctx.e.getText();
-		System.out.println("Simulate Section");
-		return ctx.id+"="+ctx.e.getText();
+		String id = ctx.id.getText();
+		return "<b>" + id + "</b>:" + ctx.e.getText() + "<br>";
 	}
 
 	@Override
 	public String visitNot(hdlParser.NotContext ctx) {
-		return "\\neg(" + visit(ctx.e);
+		return "\\neg(" + visit(ctx.e) + ")";
 	}
 
 	@Override
 	public String visitOr(hdlParser.OrContext ctx) {
-		return visit(ctx.e1) + "\\vee" + visit(ctx.e2);
+		return visit(ctx.e1) + "\\vee(" + visit(ctx.e2) + ")";
 	}
 
 	@Override
@@ -146,7 +155,7 @@ class Interpreter extends AbstractParseTreeVisitor<String> implements hdlVisitor
 
 	@Override
 	public String visitAnd(hdlParser.AndContext ctx) {
-		return visit(ctx.e1) + "\\wedge" + visit(ctx.e2);
+		return visit(ctx.e1) + "\\wedge(" + visit(ctx.e2) + ")";
 	}
 
 	@Override
@@ -159,40 +168,4 @@ class Interpreter extends AbstractParseTreeVisitor<String> implements hdlVisitor
 
 		return "(" + visit(ctx.e) + ")";
 	}
-   /* public Double visitStart(implParser.StartContext ctx){
-	System.out.println("Evaluating Start");
-	return visit(ctx.e);
-    }*/
-
-	//T visitLatchSection(hdlParser.LatchSectionContext ctx);
-	/* public Double visitAdd(implParser.AddContext ctx){
-	Double d1=visit(ctx.e1);
-	Double d2=visit(ctx.e2);
-	System.out.println("Addition "+d1+ctx.op.getText()+d2);
-	if (ctx.op.getText().equals("+"))
-	    return d1+d2;
-	else return d1-d2;
-    };*/
-   /* public Double visitMult(implParser.MultContext ctx){
-	Double d1=visit(ctx.e1);
-	Double d2=visit(ctx.e2);
-	System.out.println("Mult "+d1+ctx.op.getText()+d2);
-	if (ctx.op.getText().equals("*"))
-	    return d1*d2;
-	else return d1/d2;
-    }
-    public Double visitVar(implParser.VarContext ctx){
-	System.err.println("Variables not yet supported.");
-	System.exit(-1);
-	return null;
-    };
-    public Double visitConst(implParser.ConstContext ctx){
-	return Double.valueOf(ctx.f.getText());
-    }
-    public Double visitParen(implParser.ParenContext ctx){
-	System.out.println("Parentheses");
-	return visit(ctx.e);}*/
-
-
 }
-
