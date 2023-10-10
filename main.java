@@ -65,7 +65,7 @@ class Interpreter extends AbstractParseTreeVisitor<String> implements hdlVisitor
 
 		program += ctx.ins.getText();
 
-		visit(ctx.lats);
+		System.out.println(visit(ctx.lats));
 
 		return ctx.name_of_file.getText() + ctx.ins.getText() + ctx.outs.getText();
 	}
@@ -73,10 +73,10 @@ class Interpreter extends AbstractParseTreeVisitor<String> implements hdlVisitor
 	@Override
 	public String visitLatchSection(hdlParser.LatchSectionContext ctx) {
 		System.out.println("latches Section");
-		length = ctx.latches().toString().length();
-
-		return visit(ctx.latches().toString[0]);
-		return ctx.latches().toString();
+		int length = ctx.latches().toString().length();
+		System.out.println(visit(ctx.latches().get(0)));
+		return "im dooone wit this shit";
+		//return ctx.latches().toString();
 	}
 
 	@Override
@@ -92,7 +92,7 @@ class Interpreter extends AbstractParseTreeVisitor<String> implements hdlVisitor
 		String updates=ctx.updates().toString();
 		return ctx.updates().toString();
 	}
-m
+
 	@Override
 	public String visitUpdates(hdlParser.UpdatesContext ctx) {
 		String id=ctx.id.getText();
