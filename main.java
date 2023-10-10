@@ -64,17 +64,17 @@ class Interpreter extends AbstractParseTreeVisitor<String> implements hdlVisitor
 		program += ctx.name_of_file.getText() + "</h1>\n";
 
 		//ArrayList<String> insLen= (ArrayList<String>)ctx.ins;
-		program+="<h2> Inputs </h2>\n";
+		program+="\n<h2> Inputs </h2>\n";
 		for (Token c: ctx.ins)
-			program += c.getText();
+			program += c.getText() + " ";
 
-		program+="<h2> Outputs </h2>\n";
+		program+="\n<h2> Outputs </h2>\n";
 		for (Token c: ctx.outs)
-			program += c.getText();
+			program += c.getText() + " ";
 
-		program+="<h2> Latches </h2>";
+		program+="\n<h2> Latches </h2>\n";
 		program+=visit(ctx.lats);
-		program+="<h2> Updates </h2>";
+		program+="\n<h2> Updates </h2>\n";
 		program+=visit(ctx.upds);
 
 		System.out.println(program);
@@ -132,7 +132,6 @@ class Interpreter extends AbstractParseTreeVisitor<String> implements hdlVisitor
 
 	@Override
 	public String visitNot(hdlParser.NotContext ctx) {
-		System.out.println("in the not method");
 		return "\\neg(" + visit(ctx.e);
 	}
 
