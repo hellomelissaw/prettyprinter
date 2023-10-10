@@ -2,6 +2,8 @@ import org.antlr.v4.runtime.*;
 import org.antlr.v4.runtime.tree.*;
 import org.antlr.v4.runtime.CharStreams;
 import org.antlr.v4.runtime.tree.ParseTreeVisitor;
+
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -38,7 +40,11 @@ public class main {
 	// Construct an interpreter and run it on the parse tree
 	Interpreter interpreter = new Interpreter();
 	String result=interpreter.visit(parseTree);
-	System.out.println("The result is: "+result);
+	System.out.println("The result is:\n "+result);
+	String filePath = "htmlOutput.html";
+		FileWriter fileWriter = new FileWriter(filePath);
+		fileWriter.write(result);
+		fileWriter.close();
     }
 }
 
@@ -48,9 +54,6 @@ public class main {
 // simply a Double.
 
 class Interpreter extends AbstractParseTreeVisitor<String> implements hdlVisitor<String> {
-	// todo - Java will complain that "Interpreter" does not in fact
-	// implement "implVisitor" at the moment.
-
 	@Override
 	public String visitTerminal(TerminalNode node) {
 		return node.getText(); // Return the text of the visited token
@@ -58,10 +61,6 @@ class Interpreter extends AbstractParseTreeVisitor<String> implements hdlVisitor
 
 	//add comment to negar
 	public String visitStart(hdlParser.StartContext ctx) {
-		System.out.println("Evaluating Start");
-		//return "hello";
-
-
 		String program = "<!DOCTYPE html>\n" +
 				" <html><head><title> My Pretty Printer</title>\n" +
 				" <script src=\"https://polyfill.io/v3/polyfill.min.js?features=es6\"></script>\n" +
@@ -88,9 +87,7 @@ class Interpreter extends AbstractParseTreeVisitor<String> implements hdlVisitor
 		program += visit(ctx.sim);
 		program += "\n</body></html>\n";
 
-		System.out.println(program);
-
-		return ctx.name_of_file.getText();
+		return program;
 	}
 
 	@Override
@@ -129,7 +126,7 @@ class Interpreter extends AbstractParseTreeVisitor<String> implements hdlVisitor
 	@Override
 	public String visitUpdates(hdlParser.UpdatesContext ctx) {
 		String id = ctx.id.getText();
-		return id + "&larr;" + visit(ctx.e) + "<br>\n";
+		return id + "&larr; \\mathrm{" + visit(ctx.e) + "}<br>\n";
 	}
 
 	@Override
