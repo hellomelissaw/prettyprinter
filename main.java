@@ -61,11 +61,13 @@ class Interpreter extends AbstractParseTreeVisitor<String> implements hdlVisitor
 		 System.out.println("Evaluating Start");
 		//return "hello";
 		String program = "<h1>";
-		program += ctx.name_of_file.getText();
+		program += ctx.name_of_file.getText() + "</h1>\n";
 
 		program += ctx.ins.getText();
+		program+=visit(ctx.lats);
+		program+=visit(ctx.upds);
 
-		System.out.println(visit(ctx.lats));
+		System.out.println(program);
 
 		return ctx.name_of_file.getText() + ctx.ins.getText() + ctx.outs.getText();
 	}
@@ -92,16 +94,22 @@ class Interpreter extends AbstractParseTreeVisitor<String> implements hdlVisitor
 
 	@Override
 	public String visitUpdateSection(hdlParser.UpdateSectionContext ctx) {
-		System.out.println("updates section");
-		String updates=ctx.updates().toString();
-		return ctx.updates().toString();
+		System.out.println("Update Section");
+		int length = ctx.updates().size();
+
+		String updates="";
+		for (int i = 0; i <length ; i++) {
+			updates+=visit(ctx.updates().get(i));
+		}
+		//	System.out.println(latches);
+		return updates;
 	}
 
 	@Override
 	public String visitUpdates(hdlParser.UpdatesContext ctx) {
 		String id=ctx.id.getText();
-		String e=ctx.e.getText();
-		return ctx.id + "=" + ctx.e.getText();
+
+		return id + "larr" + visit(ctx.e);
 	}
 
 	@Override
@@ -114,32 +122,34 @@ class Interpreter extends AbstractParseTreeVisitor<String> implements hdlVisitor
 
 	@Override
 	public String visitNot(hdlParser.NotContext ctx) {
-		return null;
+		System.out.println("in the not method");
+		return "\\neg(" + visit(ctx.e);
 	}
 
 	@Override
 	public String visitOr(hdlParser.OrContext ctx) {
-		return null;
+		return visit(ctx.e1) + "\\vee" + visit(ctx.e2);
 	}
 
 	@Override
 	public String visitVar(hdlParser.VarContext ctx) {
-		return ctx.getText();
+		return ctx.id.getText();
 	}
 
 	@Override
 	public String visitAnd(hdlParser.AndContext ctx) {
-		return null;
+		return visit(ctx.e1) + "\\wedge" + visit(ctx.e2);
 	}
 
 	@Override
 	public String visitNum(hdlParser.NumContext ctx) {
-		return null;
+		return ctx.n.getText();
 	}
 
 	@Override
 	public String visitParen(hdlParser.ParenContext ctx) {
-		return null;
+
+		return "(" + visit(ctx.e) + ")";
 	}
    /* public Double visitStart(implParser.StartContext ctx){
 	System.out.println("Evaluating Start");

@@ -15,13 +15,13 @@ updates: id=IDENTIFIER '=' e=expr;
 simulateSection : id=IDENTIFIER '=' e=expr;
 
 
-expr: 
+expr:
       id = IDENTIFIER          #Var
     | n = NUMERIC              #Num
+    | '(' e=expr ')'           #Paren
     | op='!'e=expr             #Not
     | e1=expr op='&&' e2=expr  #And
     | e1=expr op='||' e2=expr  #Or
-    | '(' e=expr ')'           #Paren
     ;
 
 // Grammar for lexer
