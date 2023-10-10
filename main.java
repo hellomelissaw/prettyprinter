@@ -99,7 +99,7 @@ class Interpreter extends AbstractParseTreeVisitor<String> implements hdlVisitor
 	public String visitLatches(hdlParser.LatchesContext ctx) {
 	String id1=ctx.id1.getText();
 	String id2=ctx.id2.getText();
-	return id1 + "&rarr;" +id2;
+	return id1 + "&rarr;" +id2 + "<br>\n";
 	}
 
 	@Override
@@ -118,8 +118,7 @@ class Interpreter extends AbstractParseTreeVisitor<String> implements hdlVisitor
 	@Override
 	public String visitUpdates(hdlParser.UpdatesContext ctx) {
 		String id=ctx.id.getText();
-
-		return id + "&larr;" + visit(ctx.e);
+		return id + "&larr;" + visit(ctx.e) + "<br>\n";
 	}
 
 	@Override
